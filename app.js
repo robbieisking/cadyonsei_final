@@ -4,6 +4,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongodb = require('mongodb');
+var database;
+
+
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -12,6 +16,7 @@ var app = express();
 
 var port = process.env.PORT || 5000;
 var http = require('http').Server(app);
+
 
 
 // view engine setup
@@ -27,6 +32,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
+app.use('/proj',routes);
+app.use('/make',routes);
+
 app.use('/users', users);
 
 // catch 404 and forward to error handler
@@ -49,6 +57,17 @@ if (app.get('env') === 'development') {
     });
   });
 }
+
+mongodb.MongoClient.connect('mongodb://heroku_wxklp90m:1o9th8rl3ij7v1dbkffb9pbrqe@ds011732.mlab.com:11732/heroku_wxklp90m',function(e,db)
+    {
+                if (e) {console.log(e);return}
+                        else {console.log('success');}
+                                database = db; // 밖에서도 db 커서에 접근할 수 있도록
+
+                                        }
+
+                                        )
+
 
 // production error handler
 // no stacktraces leaked to user

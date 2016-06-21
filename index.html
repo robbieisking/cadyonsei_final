@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+
+<!-- include lib-->
+<script src=./three.js-master/build/three.js> </script>
+<script src=./three.js-master/js/controls/OrbitControls.js> </script>
+
+<script   src="https://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script>
+<meta charset=utf-8>
+<link rel=stylesheet type=text/css href=style.css>
+<link rel=stylesheet type=text/css href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css>
+
+</head>
+
+<script src=global_var.js></script>
+
+<script>
+var myData = #{JSON.stringify(title)};</script>
+
+</script>
+
+<script src=init.js> </script>
+<script src=make.js></script>
+<script>
+
+
+
+
+function upscale() {
+  glob.scalex *=2
+  glob.scaley *=2
+  glob.scalez *=2
+
+}
+
+function downscale() {
+  glob.scalex *=0.5
+  glob.scaley *=0.5
+  glob.scalez *=0.5
+
+}
+
+function cameraPos (){
+  var z = $('input[name=zpos]').val()
+  var y = $('input[name=ypos]').val()
+  var x = $('input[name=xpos]').val()
+
+  glob.camera.position.x = x
+  glob.camera.position.y = y
+  glob.camera.position.z = z
+
+}
+
+function rotate (it) {
+  it.render = function() {
+    it.rotation.x += 0.1
+  }
+}
+
+function set_ext() {
+  glob.ext_rad = $('input[name=ext_rad]').val()
+  glob.ext_height = $('input[name=ext_height]').val()
+  makeExtrude();
+  glob.ext_num = glob.now.length-1
+}
+
+function set_cube() {
+  glob.cube_x = $('input[name=cube_x]').val()
+  glob.cube_y = $('input[name=cube_y]').val()
+  glob.cube_z = $('input[name=cube_z]').val()
+  makeCube();
+  glob.cube_num = glob.now.length-1
+}
+
+function saveData() {
+  $.ajax({
+  type: "POST",
+  url: '/save',
+  data: glob,
+  success: success,
+  dataType: dataType
+});
+
+}
+
+
+
+</script>
+
+
+
+<body>
+<div class=three>
+</div>
+
+<button type=button onclick='upscale()'>double scale </button>
+<button type=button onclick='downscale()'>half scale </button>
+
+
+
+  <div class= row>
+    <div class=col-sm-8>
+      <div class=extrude>
+        <h3>extrude feature</h3>
+        <form id=extrude_circle>
+        r: <input type=text name=ext_rad>
+        h: <input type=text name=ext_height>
+
+        <input type="button" onclick="set_ext()" value="Submit form">
+        </form>
+
+      </div>
+
+      <div class=cube>
+        <h3>cube feature</h3>
+        <form id=cube_feature>
+        x: <input type=text name=cube_x>
+        y: <input type=text name=cube_y>
+        z: <input type=text name=cube_z>
+
+        <input type="button" onclick="set_cube()" value="Submit form">
+        </form>
+
+      </div>
+
+
+        <button type=button onclick='makeCylinder()'>make cylinder</button>
+
+
+
+      <form id=cameraPosition>
+        <h3> camera Position </h3>
+        x:<input type=text name=xpos><br>
+        y:<input type=text name=ypos><br>
+        z:<input type=text name=zpos><br>
+        <input type="button" onclick="cameraPos()" value="Submit form">
+      </form>
+
+      </div>
+      <form id=save action='/save'>
+        <h3> proj save </h3>
+        <input type="button" onclick='saveData()' value="Save">
+      </form>
+    </div>
+
+<ul class=objs>
+
+</ul>
+</body>
+
+
+
+
+
+</html>

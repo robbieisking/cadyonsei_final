@@ -1,0 +1,21 @@
+doctype html
+html
+    head
+        title = title
+        script(src='https://code.jquery.com/jquery-1.12.4.min.js', integrity='sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=', crossorigin='anonymous')
+
+    body
+
+        h1 welcome web cad system
+
+        h3 project lists
+
+        ul
+            each val in proj_list
+                li!= '<a href=/proj?projname='+ val.proj_name + '> ' + val.proj_name + '</a>'
+
+        h3 make project
+
+        form(action='/make' method='post')
+            input(type=text name='proj_name' placeholder='proj name')
+            input(type='submit' value=submit)
